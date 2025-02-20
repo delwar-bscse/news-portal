@@ -5,6 +5,7 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import { ThemeProvider } from "@/context/themeConext";
 
+{/* Font */}
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
