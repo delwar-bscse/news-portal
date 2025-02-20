@@ -1,87 +1,97 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AiOutlineMenu } from "react-icons/ai";
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
+import { useContext } from "react";
+import { ThemeContext } from "@/context/themeConext";
 
 const Navbar = () => {
+  const pathname = usePathname(); // Get the current route
+  const {isDarkMode, toggleTheme}: any =  useContext(ThemeContext)
+
+  // Function to check if link is active
+  const getActiveClass = (path:string) =>
+    pathname === path ? "text-red-500 font-semibold" : "text-gray-700";
+
+  // Function to check if any of the services are active
+  const isServicesActive = ["/web", "/apps", "/seo"].some((service) =>
+    pathname.startsWith(service)
+  );
+
   return (
-    <header className="py-4 shadow-md">
-      <nav className="max-w-7xl mx-auto px-4 flex items-center justify-between sm:px-6 lg:px-8">
+    <header className="py-4 shadow-md dark:bg-gray-800 dark:text-white">
+      <nav className="max-w-7xl mx-auto px-4 flex items-center justify-between sm:px-6 lg:px-8 dark:bg-gray-800 dark:text-white">
         {/* Logo */}
         <div className="text-xl font-bold">
-          <Link href="/">Daily News</Link>
+          <Link href="/" className={getActiveClass("/")}>
+            Daily News
+          </Link>
         </div>
 
         {/* Desktop Menu */}
         <NavigationMenu className="hidden lg:flex">
-          <NavigationMenuList>
-            <NavigationMenuItem className="flex items-center gap-4">
-              <NavigationMenuLink href="/news" className="hover:text-red-500">
+          <NavigationMenuList className="flex items-center gap-4">
+            <NavigationMenuItem>
+              <Link href="/news" className={`hover:text-red-500 ${getActiveClass("/news")}`}>
                 News
-              </NavigationMenuLink>
-              <NavigationMenuLink className="hover:text-red-500">
-                <NavigationMenuTrigger className="hover:text-red-500">
-                  Services
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="text-gray-600 shadow-md px-5 py-4 space-y-2">
-                    <li>
-                      <NavigationMenuLink
-                        href="/services/web"
-                        className="hover:text-red-500"
-                      >
-                        Web Development
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink
-                        href="/services/apps"
-                        className="hover:text-red-500"
-                      >
-                        Mobile App
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink
-                        href="/services/seo"
-                        className="hover:text-red-500"
-                      >
-                        SEO
-                      </NavigationMenuLink>
-                    </li>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuLink>
-              <NavigationMenuLink href="/about" className="hover:text-red-500">
-                About
-              </NavigationMenuLink>
-              <NavigationMenuLink
-                href="/contact"
-                className="hover:text-red-500"
+              </Link>
+            </NavigationMenuItem>
+
+            {/* Services Dropdown */}
+            <NavigationMenuItem>
+              <NavigationMenuTrigger
+                className={`hover:text-red-500 ${
+                  isServicesActive ? "text-red-500 font-semibold" : ""
+                }`}
               >
+                Services
+              </NavigationMenuTrigger>
+              <NavigationMenuContent className="bg-white flex flex-col gap-3 p-3">
+                <div className="flex flex-col gap-2">
+                  <Link href="/web" className={`hover:text-red-500 min-w-[120px] ${getActiveClass("/web")}`}>
+                    Web Development
+                  </Link>
+                  <Link href="/apps" className={`hover:text-red-500 min-w-[120px] ${getActiveClass("/apps")}`}>
+                    Mobile App
+                  </Link>
+                  <Link href="/seo" className={`hover:text-red-500 min-w-[120px] ${getActiveClass("/seo")}`}>
+                    SEO
+                  </Link>
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <Link href="/about" className={`hover:text-red-500 ${getActiveClass("/about")}`}>
+                About
+              </Link>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <Link href="/contact" className={`hover:text-red-500 ${getActiveClass("/contact")}`}>
                 Contact
-              </NavigationMenuLink>
+              </Link>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
         {/* Color switcher and Login button */}
         <div className="hidden lg:flex items-center gap-4">
-          <div className="flex items-center gap-1">
+          <div onClick={toggleTheme} className="flex items-center gap-1">
             <span>Dark Mode</span>
             <Switch />
           </div>
-          <Button variant="default">Button</Button>
+          <Button variant="default">Login</Button>
         </div>
 
         {/* Mobile Menu */}
