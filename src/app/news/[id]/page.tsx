@@ -1,33 +1,22 @@
-import { PostsItem } from "@/types/news";
+'use client'
+
 import Image from "next/image";
 import img from "@/assets/banner.jpg";
+import { useGetSingleNewsQuery } from "@/redux/apiSlice/newsSlice";
+import { useParams } from "next/navigation";
 
-export const revalidate = 60;
-
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  const posts: PostsItem[] = await fetch(
-    "https://jsonplaceholder.typicode.com/posts?_limit=10"
-  ).then((res) => res.json());
-  return posts.slice(0, 9).map((post) => ({
-    id: String(post.id),
-  }));
-}
-
-const NewsDetailsPage = async ({ params }: { params: { id: string } }) => {
-  // Ensure ID is valid
-  if (!params?.id) {
-    return <p>Error: No ID provided</p>;
-  }
+const NewsDetailsPage = () => {
+  const {id} = useParams();
 
   // Convert params.id to a number (API expects a number)
-  const postId = Number(params.id);
+  const postId: number = Number(id);
 
   // Fetch post details using the post ID
-  const post = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${postId}`
-  ).then((res) => res.json());
+  const { data: post, isLoading, error } = useGetSingleNewsQuery(postId);
+
+  // Handle loading, error, and data
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error fetching news</div>;
 
   return (
     <section className="py-12">
@@ -36,8 +25,10 @@ const NewsDetailsPage = async ({ params }: { params: { id: string } }) => {
           <Image
             src={img}
             alt="news details"
+            placeholder="blur"
             width={800}
-            height={450}
+            height={450} 
+            priority={false}             
             className="rounded-md object-cover"
           />
         </div>

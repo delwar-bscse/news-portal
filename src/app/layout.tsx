@@ -3,9 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import CustomProvider from "@/utils/CustomProvider";
 import { ThemeProvider } from "@/context/themeConext";
 
-{/* Font */}
+
+{/* Font */ }
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -27,7 +29,9 @@ export default function RootLayout({
         <ThemeProvider>
           <Navbar />
           <main className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {children}
+            <CustomProvider>
+              {children}
+            </CustomProvider>
           </main>
           <Footer />
         </ThemeProvider>
