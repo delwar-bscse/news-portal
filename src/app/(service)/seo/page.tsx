@@ -1,8 +1,10 @@
-import React from 'react'
+import CommonPage from '@/components/shared/CommonPage'
 
 const SEO = () => {
   return (
-    <div>SEO</div>
+    <div>
+      <CommonPage title='SEO Service'/>
+    </div>
   )
 }
 

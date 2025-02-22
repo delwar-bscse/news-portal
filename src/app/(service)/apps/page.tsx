@@ -1,8 +1,10 @@
-import React from 'react'
+import CommonPage from '@/components/shared/CommonPage'
 
 const AppDevelopment = () => {
   return (
-    <div>AppDevelopment</div>
+    <div>
+      <CommonPage title='App Development'/>
+    </div>
   )
 }
 

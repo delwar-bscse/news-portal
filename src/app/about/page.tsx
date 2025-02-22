@@ -1,8 +1,11 @@
+import CommonPage from '@/components/shared/CommonPage'
 import React from 'react'
 
 const AboutPage = () => {
   return (
-    <div>AboutPage</div>
+    <div>
+      <CommonPage title='About Page'/>  
+    </div>
   )
 }
 
